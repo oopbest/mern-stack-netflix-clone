@@ -11,7 +11,7 @@ function SignUpPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signup } = useAuthStore();
+  const { signup, isSigningUp } = useAuthStore();
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -86,9 +86,10 @@ function SignUpPage() {
 
             <button
               type="submit"
-              className="w-full py-2 bg-red-600 text-white font-semibold rounded-md"
+              className="w-full py-2 bg-red-600 text-white font-semibold rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+              disabled={isSigningUp}
             >
-              Sign Up
+              {isSigningUp ? "Loading..." : "Sign Up"}
             </button>
           </form>
           <div className="text-center text-gray-400">
