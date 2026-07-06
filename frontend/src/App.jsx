@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import HomePage from "./pages/home/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignUpPage from "./pages/SignUpPage.jsx";
@@ -11,6 +11,15 @@ import WatchPage from "./pages/WatchPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import SearchHistoryPage from "./pages/SearchHistoryPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+
+const MainLayout = () => {
+  return (
+    <>
+      <Outlet />
+      <Footer />
+    </>
+  );
+};
 
 function App() {
   const { user, isCheckingAuth, authCheck } = useAuthStore();
@@ -31,30 +40,31 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route
-          path="/login"
-          element={!user ? <LoginPage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/signup"
-          element={!user ? <SignUpPage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/watch/:id"
-          element={user ? <WatchPage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/search"
-          element={user ? <SearchPage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/history"
-          element={user ? <SearchHistoryPage /> : <Navigate to="/" />}
-        />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/signup"
+            element={!user ? <SignUpPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/watch/:id"
+            element={user ? <WatchPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/search"
+            element={user ? <SearchPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/history"
+            element={user ? <SearchHistoryPage /> : <Navigate to="/" />}
+          />
+        </Route>
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
-      <Footer />
 
       <Toaster />
     </>
