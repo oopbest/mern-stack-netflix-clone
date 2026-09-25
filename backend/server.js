@@ -13,12 +13,18 @@ import { connectDB } from "./config/db.js";
 import { protectRoute } from "./middleware/protectRoute.js";
 import cookieParser from "cookie-parser";
 
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger.js";
+
 const app = express();
 const PORT = ENV_VARS.PORT;
 const __dirname = path.resolve();
 
 app.use(express.json()); // for parsing application/json
 app.use(cookieParser());
+
+// swagger docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/movie", protectRoute, movieRoutes);
