@@ -43,7 +43,9 @@ function SearchHistoryPage() {
   const handleDelete = async (item) => {
     try {
       await axios.delete(`/api/v1/search/history/${item.id}`);
-      setSearchHistory(searchHistory.filter((result) => result.id !== item.id));
+      setSearchHistory((prev) =>
+        prev.filter((result) => result.id !== item.id),
+      );
     } catch (error) {
       console.log("Error deleting search history: " + error);
     }
@@ -79,8 +81,8 @@ function SearchHistoryPage() {
                     result.searchType === "movie"
                       ? "bg-red-600"
                       : result.searchType === "tv"
-                      ? "bg-blue-600"
-                      : "bg-green-600"
+                        ? "bg-blue-600"
+                        : "bg-green-600"
                   }`}
                 >
                   {result.searchType[0].toUpperCase() +

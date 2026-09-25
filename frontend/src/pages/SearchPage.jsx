@@ -25,7 +25,7 @@ function SearchPage() {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `/api/v1/search/${activeTab}/${searchTerm}`
+        `/api/v1/search/${activeTab}/${encodeURIComponent(searchTerm)}`,
       );
       setResults(response.data.content);
     } catch (error) {
@@ -102,7 +102,7 @@ function SearchPage() {
                   </div>
                 ) : (
                   <Link
-                    to={`/watch/${item.id}`}
+                    to={`/watch/${activeTab}/${item.id}`}
                     onClick={() => setContentType(activeTab)}
                   >
                     <img

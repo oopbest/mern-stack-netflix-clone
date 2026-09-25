@@ -51,7 +51,7 @@ function App() {
             element={!user ? <SignUpPage /> : <Navigate to="/" />}
           />
           <Route
-            path="/watch/:id"
+            path="/watch/:contentType/:id"
             element={user ? <WatchPage /> : <Navigate to="/login" />}
           />
           <Route

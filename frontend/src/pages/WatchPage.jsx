@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import useContentStore from "../store/content.js";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
@@ -11,8 +10,7 @@ import { formatReleaseDate } from "../utils/dateFunction.js";
 import WatchPageSkeleton from "../components/skeletons/WatchPageSkeleton.jsx";
 
 function WatchPage() {
-  const { id } = useParams();
-  const { contentType } = useContentStore();
+  const { contentType, id } = useParams();
 
   const [trailers, setTrailers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,9 +24,10 @@ function WatchPage() {
     const getTrailers = async () => {
       try {
         const response = await axios.get(
-          `/api/v1/${contentType}/${id}/trailers`
+          `/api/v1/${contentType}/${id}/trailers`,
         );
         setTrailers(response.data.trailers);
+        setCurrentTrailerIdx(0);
       } catch (error) {
         console.error("Error fetching trailers:", error);
         setTrailers([]);
@@ -45,7 +44,7 @@ function WatchPage() {
     const getSimilarContent = async () => {
       try {
         const response = await axios.get(
-          `/api/v1/${contentType}/${id}/similar`
+          `/api/v1/${contentType}/${id}/similar`,
         );
         setSimilarContent(response.data.content);
       } catch (error) {
@@ -64,7 +63,7 @@ function WatchPage() {
     const getContentDetails = async () => {
       try {
         const response = await axios.get(
-          `/api/v1/${contentType}/${id}/details`
+          `/api/v1/${contentType}/${id}/details`,
         );
         setContentDetails(response.data.content);
       } catch (error) {
@@ -84,7 +83,7 @@ function WatchPage() {
 
   const handleNextTrailer = () => {
     setCurrentTrailerIdx((prevIdx) =>
-      prevIdx < trailers.length - 1 ? prevIdx + 1 : prevIdx
+      prevIdx < trailers.length - 1 ? prevIdx + 1 : prevIdx,
     );
   };
 
@@ -104,6 +103,8 @@ function WatchPage() {
       });
     }
   };
+
+  const currentTrailer = trailers[currentTrailerIdx];
 
   if (loading)
     return (
@@ -158,11 +159,11 @@ function WatchPage() {
         )}
 
         <div className="aspect-video mb-8 p-2 sm:px-10 md:px-32">
-          {trailers.length > 0 && (
+          {currentTrailer && (
             <ReactPlayer
-              url={`https://www.youtube.com/watch?v=${trailers[currentTrailerIdx].key}`}
-              width={"100%"}
-              height={"70vh"}
+              url={`https://www.youtube.com/watch?v=${currentTrailer.key}`}
+              width="100%"
+              height="70vh"
               controls
               className="mx-auto overflow-hidden rounded-lg"
             />
@@ -186,7 +187,7 @@ function WatchPage() {
             </h2>
             <p className="mt-2 text-lg">
               {formatReleaseDate(
-                contentDetails?.release_date || contentDetails?.first_air_date
+                contentDetails?.release_date || contentDetails?.first_air_date,
               )}{" "}
               |{" "}
               {contentDetails?.adult ? (
@@ -216,7 +217,7 @@ function WatchPage() {
                 if (item.poster_path === null) return null;
                 return (
                   <Link
-                    to={`/watch/${item.id}`}
+                    to={`/watch/${contentType}/${item.id}`}
                     key={item.id}
                     className="w-52 flex-none"
                   >

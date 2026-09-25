@@ -5,7 +5,7 @@ export const searchPerson = async (req, res) => {
   try {
     const { query } = req.params;
     const response = await fetchFromTMDB(
-      `https://api.themoviedb.org/3/search/person?query=${query}&language=en-US&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/person?query=${encodeURIComponent(query)}&language=en-US&page=1&include_adult=false`
     );
 
     if (response.results.length === 0)
@@ -39,7 +39,7 @@ export const searchMovie = async (req, res) => {
   try {
     const { query } = req.params;
     const response = await fetchFromTMDB(
-      `https://api.themoviedb.org/3/search/movie?query=${query}&language=en-US&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&language=en-US&page=1&include_adult=false`
     );
 
     if (response.results.length === 0)
@@ -73,7 +73,7 @@ export const searchTv = async (req, res) => {
   try {
     const { query } = req.params;
     const response = await fetchFromTMDB(
-      `https://api.themoviedb.org/3/search/tv?query=${query}&language=en-US&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(query)}&language=en-US&page=1&include_adult=false`
     );
 
     if (response.results.length === 0)

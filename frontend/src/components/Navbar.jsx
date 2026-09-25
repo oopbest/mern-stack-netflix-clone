@@ -58,14 +58,14 @@ function Navbar() {
         />
         <LogOut className="size-6 cursor-pointer" onClick={logout} />
 
-        <div className="sm:hidden">
+        <div className="md:hidden">
           <Menu className="size-6 cursor-pointer" onClick={toggleMobileMenu} />
         </div>
       </div>
 
       {/* mobile menu button */}
       {isMobileMenuOpen && (
-        <div className="w-full sm:hidden mt-4 z-50 bg-black border rounded border-gray-800">
+        <div className="w-full md:hidden mt-4 z-50 bg-black border rounded border-gray-800">
           <Link
             to="/"
             className="block hover:underline p-2"
